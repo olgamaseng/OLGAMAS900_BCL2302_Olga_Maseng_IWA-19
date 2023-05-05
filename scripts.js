@@ -7,9 +7,8 @@ const page = 1; //added const
 // Display Books
 // code to display more books goes here
 
-let bookStart = 0;
-let bookEnd = 36;
 
+let [bookStart,bookEnd] = [0,36]
 const inco = document.querySelector("[data-list-items]"); // created a variable and took the empty div from HTML line 93
 const extracted = books.slice(bookStart, bookEnd); //source.slice(range[0], range[1])   // commented out source and replaced it with books to display the 36 books
 const fragment = document.createDocumentFragment();
@@ -144,7 +143,6 @@ moreBooks.innerHTML = /* html */ `
 // removed the () on the main and removed [] on page*BOOKS_PER_PAGE and replaced with (). Removed the [] and replaced with ``
 
 moreBooks.addEventListener("click", () => {
-    showMore.click = true;
     moreBooks.focus();
 });
 
@@ -250,3 +248,19 @@ dataSearchCancel.addEventListener("click", () => {
         searchBar.close();
     }
 });
+
+const searchOverlay = document.querySelector(".<button class="overlay__button overlay__button_primary" type="submit" form="search">Search</button>");
+const searchInput = document.querySelector(".search__input");
+
+searchOverlay.addEventListener("click", () => {
+  const query = searchInput.value;
+  // Perform search with query variable
+  console.log(`Searching for "${query}"...`);
+
+  // Reset search input value
+  searchInput.value = "";
+
+  // Hide search bar
+  searchBar.close();
+});
+
