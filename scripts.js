@@ -198,7 +198,7 @@ showMoreButton.addEventListener("click", () => {
 
 const searchButton = document.querySelector("[data-header-search]"); // created a variable and took the empty div from HTML line 65
 const searchBar = document.querySelector("[data-search-overlay]"); // created a variable and took the empty div from HTML line 113
-const title = document.querySelector("[data-search-title]");
+
 searchButton.addEventListener("click", () => {
     searchBar.open = true;
 });
@@ -249,18 +249,88 @@ dataSearchCancel.addEventListener("click", () => {
     }
 });
 
-const searchOverlay = document.querySelector(".<button class="overlay__button overlay__button_primary" type="submit" form="search">Search</button>");
-const searchInput = document.querySelector(".search__input");
 
-searchOverlay.addEventListener("click", () => {
-  const query = searchInput.value;
-  // Perform search with query variable
-  console.log(`Searching for "${query}"...`);
-
-  // Reset search input value
-  searchInput.value = "";
-
-  // Hide search bar
-  searchBar.close();
-});
-
+// Search specific books
+const searchFilter = document.querySelector('[data-search-form]')
+// add event listener to search form
+searchFilter.addEventListener('submit', (event)=>{
+    event.preventDefault();
+// hide book list
+   document.querySelector('[data-list-items]').style.display = 'none'
+// clear message area
+   document.querySelector('[data-list-message]').innerHTML = ''
+// get form data
+   const formData = new FormData(event.target)
+    const title1 = formData.get('title');
+    const genre1 = formData.get('genre');
+    const author1 = formData.get('author');
+// array to store filtered books
+const filteredBooks = [];
+// loop through all books
+for (let i = 0; i < books.length; i++) {
+  const book = books[i];
+  // if genre and author are not selected, filter by title only
+  if (genre1 === 'any' && author1 === 'any') {
+   if (book.title.toLowerCase().includes(title1.toLowerCase())){
+    filteredBooks.push(book);
+   }
+  }
+  // if genre is not selected, filter by title and author
+  if (genre1 === 'any') {
+    if (book.title.toLowerCase().includes(title1.toLowerCase()) && book.author === author1){
+     filteredBooks.push(book);
+    }
+   }
+   // if title is not entered, filter by author and genre
+   if (title1 === '') {
+    if (book.author === author1 && book.genres.includes(genre1)){
+     filteredBooks.push(book);
+    }
+   }
+   // if neither title nor author are selected, filter by genre only
+   if (title1 === '' && author1 === 'any' ) {
+    if (book.genres.includes(genre1)){
+     filteredBooks.push(book);
+    }
+   }
+   // display message if no books match filters
+   if (filteredBooks.length > 0){
+    document.querySelector('[data-list-message]').innerText = ''
+    document.querySelector('[data-list-button]').disabled = true
+    document.querySelector('[data-list-message]').style.marginTop = '-125px';
+   } else{
+    document.querySelector('[data-list-message]').innerText = 'No results found. Your filters might be too narrow.'
+    document.querySelector('[data-list-button]').disabled = true
+   }
+}
+// display filtered books
+document.querySelector('[class="list__message"]').style.display = 'block'
+// create fragment to hold filtered books
+const fragment2 = document.createDocumentFragment()
+    for (const {author ,image, title, id , description, published} of filteredBooks) {
+        const preview = document.createElement('button')
+        preview.className = 'preview'
+        preview.dataset.id = id
+        preview.dataset.title = title
+        preview.dataset.image = image
+        preview.dataset.subtitle = `${authors[author]} (${(new Date(published)).getFullYear()})`
+        preview.dataset.description = description
+        preview.dataset.genre = genres
+        // create preview button with book information
+        preview.innerHTML= /*html*/`
+        <div>
+        <image class='preview__image' src="${image}" alt="book pic"}/>
+        </div>
+        <div class='preview__info'>
+        <dt class='preview__title'>${title}<dt>
+        <dt class='preview__author'> By ${authors[author]}</dt>
+        </div>`
+// append preview button to fragment
+        fragment2.appendChild(preview)
+        }
+// add filtered books to message area
+    const booklist2 = document.querySelector('[class="list__message"]')
+    booklist2.append(fragment2)
+        document.querySelector('[data-search-form]').reset()
+        document.querySelector("[data-search-overlay]").close()
+    })
