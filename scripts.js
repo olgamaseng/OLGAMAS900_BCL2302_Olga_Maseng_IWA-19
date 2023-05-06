@@ -10,7 +10,7 @@ const page = 1; //added const
 
 let [bookStart,bookEnd] = [0,36]
 const inco = document.querySelector("[data-list-items]"); // created a variable and took the empty div from HTML line 93
-const extracted = books.slice(bookStart, bookEnd); //source.slice(range[0], range[1])   // commented out source and replaced it with books to display the 36 books
+const extracted = matches.slice(bookStart, bookEnd); //source.slice(range[0], range[1])   // commented out source and replaced it with books to display the 36 books
 const fragment = document.createDocumentFragment();
 for (const { author, image, title, id, description, published } of extracted) {
     // turned it into a for loop by adding const inside the brackets ()
@@ -153,7 +153,7 @@ let startIndex = 36;
 let endIndex = 72;
 
 showMoreButton.addEventListener("click", () => {
-    const extracted = books.slice(startIndex, endIndex);
+    const extracted = matches.slice(startIndex, endIndex);
 
     const fragment = document.createDocumentFragment();
     for (const {
@@ -267,8 +267,8 @@ searchFilter.addEventListener('submit', (event)=>{
 // array to store filtered books
 const filteredBooks = [];
 // loop through all books
-for (let i = 0; i < books.length; i++) {
-  const book = books[i];
+for (let i = 0; i < matches.length; i++) {
+  const book = matches[i];
   // if genre and author are not selected, filter by title only
   if (genre1 === 'any' && author1 === 'any') {
    if (book.title.toLowerCase().includes(title1.toLowerCase())){
@@ -278,19 +278,19 @@ for (let i = 0; i < books.length; i++) {
   // if genre is not selected, filter by title and author
   if (genre1 === 'any') {
     if (book.title.toLowerCase().includes(title1.toLowerCase()) && book.author === author1){
-     filteredBooks.push(book);
+     filteredBooks.push(matches);
     }
    }
    // if title is not entered, filter by author and genre
    if (title1 === '') {
     if (book.author === author1 && book.genres.includes(genre1)){
-     filteredBooks.push(book);
+     filteredBooks.push(matches);
     }
    }
    // if neither title nor author are selected, filter by genre only
    if (title1 === '' && author1 === 'any' ) {
     if (book.genres.includes(genre1)){
-     filteredBooks.push(book);
+     filteredBooks.push(matches);
     }
    }
    // display message if no books match filters
