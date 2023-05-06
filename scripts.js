@@ -13,7 +13,7 @@ const inco = document.querySelector("[data-list-items]"); // created a variable 
 const extracted = books.slice(bookStart, bookEnd); //source.slice(range[0], range[1])   // commented out source and replaced it with books to display the 36 books
 const fragment = document.createDocumentFragment();
 for (const { author, image, title, id, description, published } of extracted) {
-    // added s on author, turned it into a for loop
+    // turned it into a for loop by adding const inside the brackets ()
     //const { author: authorId, id, image, title } = props
 
     let element = document.createElement("button");
